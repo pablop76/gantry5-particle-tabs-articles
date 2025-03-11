@@ -1,0 +1,83 @@
+name: Articles Joomla Tabs
+description: Articles Joola Tabs.
+type: particle
+icon: fa-table
+
+configuration:
+  caching:
+    type: static
+
+form:
+  fields:
+    enabled:
+      type: input.checkbox
+      label: Enabled
+      description: Globally enable Content Tabs particle.
+      default: true
+    _tabs:
+      type: container.tabs
+      fields:
+        _tab_content:
+          label: Content
+          fields:
+            class:
+              type: input.selectize
+              label: CSS Classes
+              description: CSS class name for the particle.
+
+            title:
+              type: input.text
+              label: Title
+              description: Customize the particle title text.
+              placeholder: Enter title
+
+            animation:
+              type: select.select
+              label: Animation Type
+              description: Set the animation type.
+              default: slide
+              options:
+                left: Slide Left
+                right: Slide Right
+                up: Slide Up
+                down: Slide Down
+                fade: Fade
+                toggle: Toggle
+            meta:
+              type: enable.enable
+              label: Show meta
+              description: Set on/off meta.
+              default: false
+
+            items:
+              type: collection.list
+              array: true
+              label: Article Tabs Items
+              description: Content Tabs item to display.
+              value: title
+              ajax: true
+
+              fields:
+                .title:
+                  type: input.text
+                  label: Title
+                  description: Enter the title
+                .articleId:
+                  type: input.number
+                  label: Article ID
+                  description: Add article joomla ID.
+                  placeholder: Add article joomla ID - only one.
+        _tab_readmore:
+          label: Read more
+          overridable: false
+          fields:
+            buttontext:
+              type: input.text
+              label: Read More Label
+              description: Type in the label for the 'Read More' button
+              placeholder: Read more...
+            readmorealways:
+              type: enable.enable
+              label: Show Read More... always
+              description: Set on/off
+              default: false

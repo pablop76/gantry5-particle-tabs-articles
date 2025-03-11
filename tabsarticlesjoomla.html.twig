@@ -1,0 +1,126 @@
+{% extends '@nucleus/partials/particle.html.twig' %}
+
+{% block particle %}
+
+	<div class="{{ particle.class|e }}">
+		{% if particle.title %}
+			<h2 class="g-title">{{ particle.title|raw }}</h2>
+		{% endif %}
+
+		<div class="g-contenttabs">
+			<div id="g-contenttabs-{{ id }}" class="g-contenttabs-container">
+				<ul class="g-contenttabs-tab-wrapper-container">
+
+					{% for item in particle.items %}
+						<li class="g-contenttabs-tab-wrapper">
+							<span class="g-contenttabs-tab-wrapper-head">
+								<a class="g-contenttabs-tab" href="#g-contenttabs-item-{{ id }}-{{ loop.index }}">
+									<span class="g-contenttabs-tab-title">{{ item.title|raw }}</span>
+								</a>
+							</span>
+						</li>
+					{% endfor %}
+
+				</ul>
+
+				<div class="clearfix"></div>
+				<ul class="g-contenttabs-content-wrapper-container">
+					{% for item in particle.items %}
+						<li class="g-contenttabs-tab-wrapper">
+							{% set options = {published, id: [[item.articleId]]} %}
+							{% set article = joomla.finder('content', options).language().find()|first %}
+							<div class="g-contenttabs-tab-wrapper-body">
+								<div class="g-contenttabs-content" id="g-contenttabs-item-{{ id }}-{{ loop.index }}">
+									<div class="card-body">
+										<div class="g-array-item-title">
+											<h3 class="g-item-title">
+												<a href="{{ article.route }}">
+													{{ article.title|raw }}
+												</a>
+											</h3>
+										</div>
+										{% if particle.meta %}
+										<div class="g-array-item-details">
+											<span class="g-array-item-date">
+												<i class="far fa-clock" aria-hidden="true"></i>
+												{{ article.publish_up|date('l, d F Y') }}
+											</span>
+
+											<span class="g-array-item-author">
+												<i class="fa fa-user" aria-hidden="true"></i>
+												{% if article.created_by_alias %}
+												{{ article.created_by_alias }}
+												{% else %}
+												{{ article.author.name }}
+												{% endif %}
+											</span>
+
+											<span class="g-array-item-category">
+												{% set cat = article.categories|last %}
+												<a href="{{ cat.route }}">
+													<i class="fa fa-folder-open" aria-hidden="true"></i>
+													<a href="{{ cat.route }}">
+														{{ cat.title }}
+													</a>
+												</a>
+											</span>
+
+											<span class="g-array-item-hits">
+												<i class="fa fa-eye" aria-hidden="true"></i>
+												{{ article.hits }}
+											</span>
+										</div>
+										{% endif %}
+										<div class="g-array-item-text">
+											{{ article.introtext|raw }}
+										</div>
+										{# if the article does not have a division into read more always show read more #}
+										{% if particle.readmorealways %}
+											<div class="g-array-item-read-more">
+												<a href="{{ article.route }}" class=" button">
+													{{particle.buttontext|raw|default('Read more...') }}
+												</a>
+											</div>
+                                        {% elseif article.readmore %}
+											<div class="g-array-item-read-more">
+												<a href="{{ article.route }}" class=" button">
+													{{particle.buttontext|raw|default('Read more...') }}
+												</a>
+											</div>
+										{% endif %}
+									</div>
+								</div>
+							</div>
+						</li>
+					{% endfor %}
+
+				</ul>
+				<div class="clearfix"></div>
+			</div>
+		</div>
+	</div>
+
+{% endblock %}
+
+{% block javascript %}
+	{% do gantry.load('jquery') %}
+	 <script src="{{ url('gantry-theme://js/juitabs.js') }}"></script>
+{% endblock %}
+
+{% block javascript_footer %}
+	 <script type="text/javascript">
+								        jQuery(document).ready(function () {
+								            jQuery('#g-contenttabs-{{ id }}').tabs({
+								                show: {
+								                    {% if particle.animation == 'up' or particle.animation == 'down' or particle.animation == 'left' or particle.animation == 'right' %}
+								                    effect: 'slide',
+								                    direction: '{{ particle.animation }}',
+								                    {% else %}
+								                    effect: '{{ particle.animation|default('slide') }}',
+								                    {% endif %}
+								                    duration: 500
+								                }
+								            });
+								        });
+								    </script>
+{% endblock %}
