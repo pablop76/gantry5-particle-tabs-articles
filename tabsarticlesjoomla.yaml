@@ -58,7 +58,7 @@ form:
               ajax: true
 
               fields:
-                .title:
+                .titleItem:
                   type: input.text
                   label: Title
                   description: Enter the title

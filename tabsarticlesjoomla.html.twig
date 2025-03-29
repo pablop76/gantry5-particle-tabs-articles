@@ -15,7 +15,7 @@
 						<li class="g-contenttabs-tab-wrapper">
 							<span class="g-contenttabs-tab-wrapper-head">
 								<a class="g-contenttabs-tab" href="#g-contenttabs-item-{{ id }}-{{ loop.index }}">
-									<span class="g-contenttabs-tab-title">{{ item.title|raw }}</span>
+									<span class="g-contenttabs-tab-title">{{ item.titleItem|raw|default('item') }}</span>
 								</a>
 							</span>
 						</li>
